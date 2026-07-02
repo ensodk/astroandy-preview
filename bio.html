@@ -31,15 +31,16 @@
     .intro-copy p { color:rgba(255,255,255,.78); max-width:58ch; }
     .intro-copy .intro-lead { font-size:clamp(1.2rem,1.7vw,1.45rem); line-height:1.35; color:var(--text); }
 
-    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:.9rem; }
-    .stat { padding:1.1rem .9rem 1rem; text-align:center; }
+    /* quiet supporting stat row — not a headline claim */
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:1.4rem; margin-top:.4rem; }
+    .stat { padding-top:.85rem; border-top:1px solid var(--glass-border); text-align:left; }
     .stat__num {
       display:block; font-family:var(--display); font-weight:700;
-      font-size:clamp(1.9rem,3vw,2.7rem); line-height:1; color:var(--orange);
+      font-size:clamp(1.35rem,2vw,1.8rem); line-height:1; color:rgba(255,255,255,.9);
     }
     .stat__label {
-      display:block; margin-top:.45rem; font-family:var(--accent);
-      font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--text-dim);
+      display:block; margin-top:.4rem; font-family:var(--accent);
+      font-size:.56rem; letter-spacing:.16em; text-transform:uppercase; color:var(--text-dim);
     }
     .stats .stat:nth-child(2) { transition-delay:.07s; }
     .stats .stat:nth-child(3) { transition-delay:.14s; }
@@ -156,10 +157,10 @@
           <p class="intro-lead reveal">Andrés Felipe Vázquez Santiago, nacido en San Lorenzo, Puerto Rico, es un artista que fusiona visión, disciplina y una estética musical que integra espiritualidad, rap épico y sonidos contemporáneos del reggaetón, pop, R&amp;B y ritmos tropicales como el afro, reggae, dancehall y funk.</p>
           <p class="reveal">Graduado del Bachillerato en Investigación Acción Social (INAS) con concentración en Ciencias Políticas de la Universidad de Puerto Rico, Recinto de Humacao, su propuesta artística se caracteriza por la introspección, la exploración de la dualidad humana y una misión creativa que trasciende lo musical.</p>
           <div class="stats">
-            <div class="stat card reveal"><span class="stat__num">25.000</span><span class="stat__label">personas, Tegucigalpa</span></div>
-            <div class="stat card reveal"><span class="stat__num">15</span><span class="stat__label">canciones en Eterno Retorno</span></div>
-            <div class="stat card reveal"><span class="stat__num">65.000</span><span class="stat__label">personas, Santiago de Compostela</span></div>
-            <div class="stat card reveal"><span class="stat__num">4</span><span class="stat__label">fechas en HÏ Ibiza</span></div>
+            <div class="stat reveal"><span class="stat__num">25.000</span><span class="stat__label">personas, Tegucigalpa</span></div>
+            <div class="stat reveal"><span class="stat__num">15</span><span class="stat__label">canciones en Eterno Retorno</span></div>
+            <div class="stat reveal"><span class="stat__num">65.000</span><span class="stat__label">personas, Santiago de Compostela</span></div>
+            <div class="stat reveal"><span class="stat__num">4</span><span class="stat__label">fechas en HÏ Ibiza</span></div>
           </div>
         </div>
       </div>
