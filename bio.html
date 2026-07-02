@@ -31,16 +31,15 @@
     .intro-copy p { color:rgba(255,255,255,.78); max-width:58ch; }
     .intro-copy .intro-lead { font-size:clamp(1.2rem,1.7vw,1.45rem); line-height:1.35; color:var(--text); }
 
-    /* quiet supporting stat row — not a headline claim */
-    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:1.4rem; margin-top:.4rem; }
-    .stat { padding-top:.85rem; border-top:1px solid var(--glass-border); text-align:left; }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:.9rem; }
+    .stat { padding:1.1rem .9rem 1rem; text-align:center; }
     .stat__num {
       display:block; font-family:var(--display); font-weight:700;
-      font-size:clamp(1.35rem,2vw,1.8rem); line-height:1; color:rgba(255,255,255,.9);
+      font-size:clamp(1.9rem,3vw,2.7rem); line-height:1; color:var(--orange);
     }
     .stat__label {
-      display:block; margin-top:.4rem; font-family:var(--accent);
-      font-size:.56rem; letter-spacing:.16em; text-transform:uppercase; color:var(--text-dim);
+      display:block; margin-top:.45rem; font-family:var(--accent);
+      font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--text-dim);
     }
     .stats .stat:nth-child(2) { transition-delay:.07s; }
     .stats .stat:nth-child(3) { transition-delay:.14s; }
@@ -94,17 +93,6 @@
     .album-feature img { width:100%; height:auto; border-radius:12px; display:block; box-shadow:0 18px 44px rgba(6,6,15,.6); }
     .album-feature p { margin-top:1.1rem; }
 
-    /* closing feature */
-    .feature { position:relative; border-radius:18px; overflow:hidden; margin-top:2.2rem; }
-    .feature img { width:100%; height:clamp(340px,46vw,520px); object-fit:cover; object-position:center 7%; display:block; }
-    .feature__panel {
-      position:absolute; left:clamp(1rem,4vw,2.5rem); bottom:clamp(1rem,4vw,2.5rem);
-      max-width:540px; padding:1.4rem 1.6rem;
-      background:rgba(6,6,15,.55); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-      border:1px solid var(--glass-border); border-radius:18px;
-    }
-    .feature__panel p { margin:0; max-width:none; color:rgba(255,255,255,.85); font-size:.95rem; }
-
     /* CTA band */
     .cta-band { text-align:center; }
     .cta-band .btn { margin-top:2.2rem; }
@@ -118,9 +106,6 @@
       .stats { grid-template-columns:repeat(2,1fr); }
       .album-feature { grid-template-columns:1fr; }
       .album-feature img { max-width:280px; }
-      .feature__panel { position:static; margin:.9rem 0 0; max-width:none; }
-      .feature { overflow:visible; }
-      .feature img { border-radius:18px; }
     }
   </style>
 </head>
@@ -157,10 +142,10 @@
           <p class="intro-lead reveal">Andrés Felipe Vázquez Santiago, nacido en San Lorenzo, Puerto Rico, es un artista que fusiona visión, disciplina y una estética musical que integra espiritualidad, rap épico y sonidos contemporáneos del reggaetón, pop, R&amp;B y ritmos tropicales como el afro, reggae, dancehall y funk.</p>
           <p class="reveal">Graduado del Bachillerato en Investigación Acción Social (INAS) con concentración en Ciencias Políticas de la Universidad de Puerto Rico, Recinto de Humacao, su propuesta artística se caracteriza por la introspección, la exploración de la dualidad humana y una misión creativa que trasciende lo musical.</p>
           <div class="stats">
-            <div class="stat reveal"><span class="stat__num">25.000</span><span class="stat__label">personas, Tegucigalpa</span></div>
-            <div class="stat reveal"><span class="stat__num">15</span><span class="stat__label">canciones en Eterno Retorno</span></div>
-            <div class="stat reveal"><span class="stat__num">65.000</span><span class="stat__label">personas, Santiago de Compostela</span></div>
-            <div class="stat reveal"><span class="stat__num">4</span><span class="stat__label">fechas en HÏ Ibiza</span></div>
+            <div class="stat card reveal"><span class="stat__num">25.000</span><span class="stat__label">personas, Tegucigalpa</span></div>
+            <div class="stat card reveal"><span class="stat__num">15</span><span class="stat__label">canciones en Eterno Retorno</span></div>
+            <div class="stat card reveal"><span class="stat__num">65.000</span><span class="stat__label">personas, Santiago de Compostela</span></div>
+            <div class="stat card reveal"><span class="stat__num">4</span><span class="stat__label">fechas en HÏ Ibiza</span></div>
           </div>
         </div>
       </div>
@@ -273,16 +258,16 @@
         </article>
 
         <!-- Presente y futuro -->
-        <article class="reveal">
-          <span class="eyebrow">Lo que viene</span>
-          <h3 class="display">Presente y futuro</h3>
-          <p>Actualmente, Astro Andy se encuentra trabajando en nueva música y desarrollando la visión de lo que será 2026, proyectado como uno de los capítulos más expansivos y trascendentales de su carrera artística.</p>
-          <figure class="feature">
-            <img src="assets/img/helmet-sky-2.jpg" alt="Casco de astronauta reflejando el cielo" width="860" height="1600" loading="lazy">
-            <figcaption class="feature__panel">
-              <p>Con una propuesta auténtica, una narrativa espiritual y una identidad musical clara, Astro Andy continúa posicionándose como uno de los talentos emergentes más prometedores del movimiento latino.</p>
-            </figcaption>
+        <article class="story-grid story-grid--flip reveal">
+          <figure class="story-media">
+            <img src="assets/img/helmet-sky-2.jpg" alt="Casco de astronauta reflejando el cielo" width="1101" height="2048" loading="lazy">
           </figure>
+          <div>
+            <span class="eyebrow">Lo que viene</span>
+            <h3 class="display">Presente y futuro</h3>
+            <p>Actualmente, Astro Andy se encuentra trabajando en nueva música y desarrollando la visión de lo que será 2026, proyectado como uno de los capítulos más expansivos y trascendentales de su carrera artística.</p>
+            <p>Con una propuesta auténtica, una narrativa espiritual y una identidad musical clara, Astro Andy continúa posicionándose como uno de los talentos emergentes más prometedores del movimiento latino.</p>
+          </div>
         </article>
 
       </div>
