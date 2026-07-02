@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Astro Andy – Videos</title>
+  <meta name="description" content="Los videos oficiales de Astro Andy – la era Eterno Retorno y la era Andrey Philip, directos desde el estudio al espacio.">
+  <link rel="icon" href="assets/logo/2c.svg">
+  <link rel="stylesheet" href="site.css">
+  <script src="galaxy.js" defer></script>
+  <script src="site.js" defer></script>
+  <style>
+    /* ---------- page: videos ---------- */
+    .page-hero {
+      min-height:55vh; display:flex; flex-direction:column; justify-content:flex-end;
+      padding:9rem 0 4rem;
+    }
+    .page-hero .wrap { width:100%; }
+    .page-hero .lead { margin-top:1.4rem; }
+
+    .section-head { margin-bottom:2.6rem; display:flex; align-items:flex-end; justify-content:space-between; gap:1.5rem; flex-wrap:wrap; }
+    .section-head .eyebrow { margin-bottom:.7rem; }
+    .tally {
+      font-family:var(--accent); font-size:.74rem; letter-spacing:.3em; text-transform:uppercase;
+      color:var(--text-dim); white-space:nowrap; padding-bottom:.55rem;
+    }
+
+    /* video cards */
+    .video-card { display:block; text-decoration:none; color:inherit; }
+    .video-card:focus-visible { outline:2px solid var(--orange); outline-offset:4px; }
+    .video-card__thumb { position:relative; aspect-ratio:16/9; overflow:hidden; background:rgba(255,255,255,.04); }
+    .video-card__thumb img {
+      width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform .45s ease;
+    }
+    .video-card:hover .video-card__thumb img,
+    .video-card:focus-visible .video-card__thumb img { transform:scale(1.06); }
+    .video-card__play {
+      position:absolute; inset:0; display:grid; place-items:center;
+      background:linear-gradient(to top, rgba(6,6,15,.4), rgba(6,6,15,0) 55%);
+    }
+    .video-card__play span {
+      width:56px; height:56px; border-radius:50%; display:grid; place-items:center;
+      background:rgba(6,6,15,.55); border:1px solid rgba(255,255,255,.35);
+      backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+      transition:background .25s ease, border-color .25s ease, transform .25s ease;
+    }
+    .video-card__play span::after {
+      content:""; display:block; margin-left:5px;
+      border-style:solid; border-width:9px 0 9px 15px;
+      border-color:transparent transparent transparent #fff;
+    }
+    .video-card:hover .video-card__play span,
+    .video-card:focus-visible .video-card__play span {
+      background:var(--orange); border-color:var(--orange); transform:scale(1.08);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .video-card__thumb img, .video-card__play span { transition:none; }
+      .video-card:hover .video-card__thumb img { transform:none; }
+    }
+
+    /* CTA band */
+    .cta-band { text-align:center; }
+    .cta-band .lead { margin:1.2rem auto 2.4rem; }
+
+    /* lightbox */
+    .lightbox {
+      position:fixed; inset:0; z-index:50; background:rgba(6,6,15,.92);
+      display:flex; align-items:center; justify-content:center;
+      padding:clamp(1rem,5vw,3.5rem);
+    }
+    .lightbox[hidden] { display:none; }
+    .lightbox__frame {
+      width:min(1020px,100%); aspect-ratio:16/9; background:#000;
+      border-radius:18px; overflow:hidden; border:1px solid var(--glass-border);
+      box-shadow:0 30px 90px rgba(0,0,0,.65);
+    }
+    .lightbox__frame iframe { width:100%; height:100%; border:0; display:block; }
+    .lightbox__close {
+      position:absolute; top:1.1rem; right:1.2rem; width:46px; height:46px;
+      border-radius:50%; border:1px solid rgba(255,255,255,.3);
+      background:rgba(255,255,255,.06); color:#fff; cursor:pointer;
+      display:grid; place-items:center;
+      transition:border-color .2s ease, color .2s ease, transform .2s ease;
+    }
+    .lightbox__close:hover { border-color:var(--orange); color:var(--orange); transform:scale(1.06); }
+    .lightbox__close:focus-visible { outline:2px solid var(--orange); outline-offset:3px; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="nav__logo" href="index.html"><img src="assets/logo/1b.svg" alt="Astro Andy"></a>
+    <ul class="nav__links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="bio.html">Bio</a></li>
+      <li><a href="musica.html">Música</a></li>
+      <li><a href="videos.html" class="is-active">Videos</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <main class="page">
+
+    <!-- hero -->
+    <header class="page-hero">
+      <div class="wrap">
+        <span class="eyebrow">En pantalla</span>
+        <h1 class="display">Videos</h1>
+        <p class="lead">Los visuales oficiales, directos desde el estudio al espacio.</p>
+      </div>
+    </header>
+
+    <!-- Era Eterno Retorno -->
+    <section class="section" aria-labelledby="era-eterno">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">Era Eterno Retorno</span>
+            <h2 class="display" id="era-eterno">El renacer</h2>
+          </div>
+          <p class="tally">11 videos</p>
+        </div>
+        <div class="grid-3">
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=kcYQ2bT41Ls" data-video="kcYQ2bT41Ls">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/kcYQ2bT41Ls/hqdefault.jpg" alt="Miniatura del video Una Vez Más" width="480" height="270">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Una Vez Más</h3>
+              <p class="card__meta">Video oficial</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=YjZZl4rxz2Q" data-video="YjZZl4rxz2Q">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/YjZZl4rxz2Q/hqdefault.jpg" alt="Miniatura del video Pretexto" width="480" height="270">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Pretexto</h3>
+              <p class="card__meta">Video oficial</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=my2mHWQyqQI" data-video="my2mHWQyqQI">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/my2mHWQyqQI/hqdefault.jpg" alt="Miniatura del video Tu Cuerpo" width="480" height="270">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Tu Cuerpo</h3>
+              <p class="card__meta">Video oficial</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=oGVp4liDaTw" data-video="oGVp4liDaTw">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/oGVp4liDaTw/hqdefault.jpg" alt="Miniatura del video Tamo En Alta con Ochaan" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Tamo En Alta ft. Ochaan</h3>
+              <p class="card__meta">Video oficial</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=yBNfHV1ifoA" data-video="yBNfHV1ifoA">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/yBNfHV1ifoA/hqdefault.jpg" alt="Miniatura del video Aventura" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Aventura</h3>
+              <p class="card__meta">Video oficial</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=OYF6I4exiWE" data-video="OYF6I4exiWE">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/OYF6I4exiWE/hqdefault.jpg" alt="Miniatura del visualizer Diciembre En Medellín" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Diciembre En Medellín</h3>
+              <p class="card__meta">Visualizer</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=tRuHB48LuVw" data-video="tRuHB48LuVw">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/tRuHB48LuVw/hqdefault.jpg" alt="Miniatura del video Modo Diablo" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Modo Diablo (MD)</h3>
+              <p class="card__meta">Video oficial</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=v7GwJ6dxi6k" data-video="v7GwJ6dxi6k">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/v7GwJ6dxi6k/hqdefault.jpg" alt="Miniatura del video Fin Del Mundo" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Fin Del Mundo</h3>
+              <p class="card__meta">Video oficial</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=pPw4u6QJzyg" data-video="pPw4u6QJzyg">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/pPw4u6QJzyg/hqdefault.jpg" alt="Miniatura del video Color" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Color</h3>
+              <p class="card__meta">Video oficial</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=wblhGPOlD1U" data-video="wblhGPOlD1U">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/wblhGPOlD1U/hqdefault.jpg" alt="Miniatura del video Rojo" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Rojo</h3>
+              <p class="card__meta">Video oficial</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=3uVdt-ot0OA" data-video="3uVdt-ot0OA">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/3uVdt-ot0OA/hqdefault.jpg" alt="Miniatura del video destacado Astro Andy" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Astro Andy</h3>
+              <p class="card__meta">Destacado</p>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Era Andrey Philip -->
+    <section class="section" aria-labelledby="era-andrey">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">Era Andrey Philip</span>
+            <h2 class="display" id="era-andrey">Los inicios</h2>
+          </div>
+          <p class="tally">13 videos</p>
+        </div>
+        <div class="grid-3">
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=2YuVCJD3QCw" data-video="2YuVCJD3QCw">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/2YuVCJD3QCw/hqdefault.jpg" alt="Miniatura del video Bobby Joe Hatton" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Bobby Joe Hatton</h3>
+              <p class="card__meta">Video oficial</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=ylQVtcYEzRk" data-video="ylQVtcYEzRk">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/ylQVtcYEzRk/hqdefault.jpg" alt="Miniatura del video Eros" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Eros</h3>
+              <p class="card__meta">Prod. DimeloGiio</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=HLnhCosvHe8" data-video="HLnhCosvHe8">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/HLnhCosvHe8/hqdefault.jpg" alt="Miniatura del video LaMelo Ball" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">LaMelo Ball (ROTY)</h3>
+              <p class="card__meta">Video oficial</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=kumD7IdrCv0" data-video="kumD7IdrCv0">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/kumD7IdrCv0/hqdefault.jpg" alt="Miniatura del video Llama" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Llama</h3>
+              <p class="card__meta">Prod. Ultra &amp; DimeloGiio</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=W6mYS3GjgQA" data-video="W6mYS3GjgQA">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/W6mYS3GjgQA/hqdefault.jpg" alt="Miniatura del video Pin Pin" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Pin Pin</h3>
+              <p class="card__meta">Cover</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=HkunmCWqRzs" data-video="HkunmCWqRzs">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/HkunmCWqRzs/hqdefault.jpg" alt="Miniatura del video 9:55" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">9:55</h3>
+              <p class="card__meta">Prod. DimeloGiio</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=I_lh0NPN4EI" data-video="I_lh0NPN4EI">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/I_lh0NPN4EI/hqdefault.jpg" alt="Miniatura del video Doña Lala con EMV y Lizyaris" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Doña Lala ft. EMV &amp; Lizyaris</h3>
+              <p class="card__meta">Video oficial</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=Hjsb9Y00Log" data-video="Hjsb9Y00Log">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/Hjsb9Y00Log/hqdefault.jpg" alt="Miniatura del video Los Mate" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Los Mate</h3>
+              <p class="card__meta">Intro</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=7qy4W3uGEMA" data-video="7qy4W3uGEMA">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/7qy4W3uGEMA/hqdefault.jpg" alt="Miniatura del video La Flakka" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">La Flakka</h3>
+              <p class="card__meta">Video oficial</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=KTb87U-oJvg" data-video="KTb87U-oJvg">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/KTb87U-oJvg/hqdefault.jpg" alt="Miniatura del video Mazukamba" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Mazukamba</h3>
+              <p class="card__meta">Outro</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=yfje7TCdH_U" data-video="yfje7TCdH_U">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/yfje7TCdH_U/hqdefault.jpg" alt="Miniatura del video Marshalls 0629" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Marshalls 0629</h3>
+              <p class="card__meta">Freestyle</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=oUS4R5O2uso" data-video="oUS4R5O2uso">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/oUS4R5O2uso/hqdefault.jpg" alt="Miniatura del video Flores Pa’ Los Muertos" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Flores Pa’ Los Muertos</h3>
+              <p class="card__meta">Video oficial</p>
+            </div>
+          </a>
+
+          <a class="card video-card reveal" href="https://www.youtube.com/watch?v=aQyfqCJ5B_I" data-video="aQyfqCJ5B_I">
+            <div class="video-card__thumb">
+              <img src="https://i.ytimg.com/vi/aQyfqCJ5B_I/hqdefault.jpg" alt="Miniatura del video Pide Un Deseo" width="480" height="270" loading="lazy">
+              <div class="video-card__play"><span></span></div>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Pide Un Deseo</h3>
+              <p class="card__meta">Video oficial</p>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta-band" aria-labelledby="cta-canal">
+      <div class="wrap reveal">
+        <span class="eyebrow">El universo en YouTube</span>
+        <h2 class="display" id="cta-canal">Suscríbete al canal</h2>
+        <p class="lead">Cada lanzamiento y cada visual, primero en YouTube.</p>
+        <a class="btn btn--primary" href="https://youtube.com/@astroandypr" target="_blank" rel="noopener">Suscribirse en YouTube</a>
+      </div>
+    </section>
+
+    <!-- footer -->
+    <footer class="footer">
+      <div class="wrap">
+        <img class="footer__logo" src="assets/logo/3b.svg" alt="Astro Andy spaceman">
+        <div class="socials">
+          <a href="https://www.instagram.com/astroandypr/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="https://www.facebook.com/astroandyprmusic/" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://www.twitter.com/astroandypr_" target="_blank" rel="noopener" aria-label="X">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+          </a>
+          <a href="https://www.tiktok.com/tag/astroandypr" target="_blank" rel="noopener" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+          </a>
+          <a href="https://youtube.com/@astroandypr" target="_blank" rel="noopener" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+          <a href="https://open.spotify.com/artist/7Mx1mmKAtCnSUsemQwussI" target="_blank" rel="noopener" aria-label="Spotify">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+          </a>
+          <a href="https://music.apple.com/us/artist/astro-andy/1699243003" target="_blank" rel="noopener" aria-label="Apple Music">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          </a>
+        </div>
+        <div>
+          <p class="footer__fine">© 2026 Astro Andy · Only Palos Ma, LLC</p>
+          <p class="footer__fine">Design &amp; Hosting · <a href="https://enso.dk" target="_blank" rel="noopener">Ensō</a></p>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Reproductor de video" hidden>
+    <button class="lightbox__close" type="button" aria-label="Cerrar video">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+    </button>
+    <div class="lightbox__frame">
+      <iframe id="lb-player" title="Reproductor de YouTube" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var lb = document.getElementById('lightbox');
+      var player = document.getElementById('lb-player');
+      var closeBtn = lb.querySelector('.lightbox__close');
+      var lastFocus = null;
+
+      function openLightbox(id) {
+        player.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1';
+        lb.hidden = false;
+        document.body.style.overflow = 'hidden';
+        lastFocus = document.activeElement;
+        closeBtn.focus();
+      }
+
+      function closeLightbox() {
+        lb.hidden = true;
+        player.src = '';
+        document.body.style.overflow = '';
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      }
+
+      Array.prototype.forEach.call(document.querySelectorAll('.video-card'), function (card) {
+        card.addEventListener('click', function (e) {
+          e.preventDefault();
+          openLightbox(card.getAttribute('data-video'));
+        });
+      });
+
+      closeBtn.addEventListener('click', closeLightbox);
+      lb.addEventListener('click', function (e) { if (e.target === lb) closeLightbox(); });
+
+      document.addEventListener('keydown', function (e) {
+        if (lb.hidden) return;
+        if (e.key === 'Escape') { closeLightbox(); return; }
+        if (e.key === 'Tab') {
+          var focusables = [closeBtn, player];
+          var i = focusables.indexOf(document.activeElement);
+          var next = e.shiftKey ? i - 1 : i + 1;
+          if (i === -1 || next >= focusables.length || next < 0) {
+            e.preventDefault();
+            focusables[e.shiftKey ? focusables.length - 1 : 0].focus();
+          }
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Astro Andy – Contacto</title>
+  <meta name="description" content="Contacto de Astro Andy para booking, prensa y colaboraciones – William Cortes Velez, Only Palos Ma, LLC.">
+  <link rel="icon" href="assets/logo/2c.svg">
+  <link rel="stylesheet" href="site.css">
+  <script src="galaxy.js" defer></script>
+  <script src="site.js" defer></script>
+  <style>
+    /* ---- contacto: page-specific ---- */
+    .sr-only {
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+    }
+    .contact-hero {
+      min-height:50vh; display:flex; flex-direction:column; justify-content:flex-end;
+      padding:9rem 0 3.5rem;
+    }
+    .contact-grid { gap:1.8rem; align-items:start; }
+    .card--pad { padding:clamp(1.6rem,3vw,2.4rem); }
+    /* content cards shouldn't lift like clickable cover cards */
+    .contact-grid .card:hover { transform:none; box-shadow:none; }
+    .contact-lines { list-style:none; margin-top:1.1rem; display:grid; gap:.45rem; }
+    .contact-lines li { color:var(--text-dim); font-size:.98rem; }
+    .contact-lines .contact-name { color:var(--text); font-weight:700; font-size:1.05rem; }
+    .contact-lines a { color:var(--orange); text-decoration:none; border-bottom:1px solid rgba(255,104,37,.35); transition:border-color .2s, color .2s; }
+    .contact-lines a:hover { color:#fff; border-color:#fff; }
+    .mgmt-row { display:flex; gap:1.4rem; align-items:center; margin-top:1.1rem; }
+    .contact-card img.mgmt-photo {
+      width:148px; height:148px; flex:0 0 auto; object-fit:cover; object-position:center 28%;
+      border-radius:16px; border:1px solid var(--glass-border);
+    }
+    .mgmt-row .contact-lines { margin-top:0; }
+    .contact-lines .contact-role {
+      font-family:var(--accent); font-size:.66rem; letter-spacing:.22em; text-transform:uppercase;
+      color:var(--orange); margin-top:-.15rem;
+    }
+    @media (max-width:480px){
+      .mgmt-row { flex-direction:column; align-items:flex-start; }
+      .contact-card img.mgmt-photo { width:150px; height:150px; }
+    }
+    /* artist follow block – clearly Astro Andy's channels, separated from the manager */
+    .follow-artist { margin-top:2.4rem; padding-top:2.4rem; border-top:1px solid var(--glass-border); text-align:center; }
+    .follow-artist .socials { justify-content:center; margin-top:1.1rem; }
+
+    /* ---- form ---- */
+    .form-field { display:block; margin-bottom:1.2rem; }
+    .form-field span {
+      display:block; font-family:var(--accent); font-size:.7rem; letter-spacing:.24em;
+      text-transform:uppercase; color:var(--text-dim); margin-bottom:.5rem;
+    }
+    .form-field input,
+    .form-field textarea {
+      width:100%; font-family:var(--body); font-size:.95rem; color:#fff;
+      background:rgba(255,255,255,.06); border:1px solid var(--glass-border);
+      border-radius:12px; padding:.85rem 1rem; transition:border-color .2s, box-shadow .2s, background .2s;
+    }
+    .form-field input:hover,
+    .form-field textarea:hover { border-color:rgba(255,255,255,.28); }
+    .form-field input::placeholder,
+    .form-field textarea::placeholder { color:rgba(255,255,255,.55); }
+    .form-field input:focus,
+    .form-field textarea:focus {
+      outline:none; border-color:var(--orange);
+      box-shadow:0 0 0 3px rgba(255,104,37,.28); background:rgba(255,255,255,.09);
+    }
+    .form-field textarea { resize:vertical; min-height:8rem; }
+    .contact-form .btn--primary { width:100%; border:0; cursor:pointer; font-size:.82rem; }
+    .form-note {
+      margin-top:1.1rem; padding:.9rem 1.1rem; border-radius:12px;
+      background:rgba(255,104,37,.12); border:1px solid rgba(255,104,37,.45);
+      backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+      color:#ffd9c4; font-size:.88rem;
+    }
+    .form-note[hidden] { display:none; }
+
+    /* ---- feature band ---- */
+    .feature-band { position:relative; border-radius:18px; overflow:hidden; border:1px solid var(--glass-border); }
+    .feature-band img { width:100%; max-height:460px; object-fit:cover; display:block; }
+    .feature-band figcaption {
+      position:absolute; inset:auto 0 0 0; padding:clamp(1.6rem,4vw,2.8rem);
+      background:linear-gradient(180deg, rgba(6,6,15,0) 0%, rgba(6,6,15,.78) 100%);
+    }
+    .feature-band blockquote p {
+      font-family:var(--display); font-size:clamp(1.5rem,3.4vw,2.6rem); line-height:1.05;
+      letter-spacing:.03em; color:#fff; text-shadow:0 2px 24px rgba(6,6,15,.9); max-width:24ch;
+    }
+    @media (max-width:600px){
+      .contact-hero { padding-top:8rem; }
+      .feature-band img { max-height:340px; aspect-ratio:4/5; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="nav__logo" href="index.html"><img src="assets/logo/1b.svg" alt="Astro Andy" width="85" height="34"></a>
+    <ul class="nav__links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="bio.html">Bio</a></li>
+      <li><a href="musica.html">Música</a></li>
+      <li><a href="videos.html">Videos</a></li>
+      <li><a href="contacto.html" class="is-active">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <main class="page">
+
+    <!-- 1 · page hero -->
+    <header class="contact-hero">
+      <div class="wrap">
+        <span class="eyebrow">Booking &amp; Management</span>
+        <h1 class="display">Contacto</h1>
+        <p class="lead">Para booking, prensa y colaboraciones.</p>
+      </div>
+    </header>
+
+    <!-- 2 · management + form -->
+    <section class="section" style="padding-top:1.5rem">
+      <div class="wrap">
+        <h2 class="sr-only">Booking y contacto</h2>
+        <div class="grid-2 contact-grid">
+
+          <div class="card card--pad contact-card reveal">
+            <h3 class="display">Management</h3>
+            <div class="mgmt-row">
+              <img class="mgmt-photo" src="assets/img/willie-v2.jpg" alt="William Cortes Velez, manager de Astro Andy" width="900" height="900" loading="lazy">
+              <ul class="contact-lines">
+                <li class="contact-name">William Cortes Velez</li>
+                <li class="contact-role">Manager</li>
+                <li>Only Palos Ma, LLC</li>
+                <li>Office: <a href="tel:+17877815951">787-781-5951</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card card--pad reveal">
+            <h3 class="display">Escríbeme</h3>
+            <form class="contact-form" id="contact-form" novalidate style="margin-top:1.3rem">
+              <label class="form-field" for="f-nombre">
+                <span>Nombre</span>
+                <input type="text" id="f-nombre" name="nombre" autocomplete="name" placeholder="Tu nombre">
+              </label>
+              <label class="form-field" for="f-email">
+                <span>Email</span>
+                <input type="email" id="f-email" name="email" autocomplete="email" placeholder="tu@correo.com">
+              </label>
+              <label class="form-field" for="f-mensaje">
+                <span>Mensaje</span>
+                <textarea id="f-mensaje" name="mensaje" rows="5" placeholder="Booking, prensa o colaboración"></textarea>
+              </label>
+              <button type="submit" class="btn btn--primary">Enviar mensaje</button>
+              <p class="form-note" id="form-note" role="status" hidden>Demo – el formulario se conecta en la versión final.</p>
+            </form>
+          </div>
+
+        </div>
+
+        <div class="follow-artist reveal">
+          <span class="eyebrow">Sigue a Astro Andy</span>
+          <div class="socials">
+              <a href="https://www.instagram.com/astroandypr/" target="_blank" rel="noopener" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.13 1.38C1.35 2.68.93 3.35.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.66 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.13-1.38.66-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.13A5.9 5.9 0 0 0 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0Zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84ZM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4Zm7.85-10.4a1.44 1.44 0 1 1-1.44-1.44 1.44 1.44 0 0 1 1.44 1.44Z"/></svg>
+              </a>
+              <a href="https://www.facebook.com/astroandyprmusic/" target="_blank" rel="noopener" aria-label="Facebook">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M24 12.07C24 5.44 18.63.07 12 .07S0 5.44 0 12.07c0 5.99 4.39 10.95 10.13 11.85v-8.38H7.08v-3.47h3.05V9.43c0-3.01 1.79-4.67 4.53-4.67 1.31 0 2.69.23 2.69.23v2.96h-1.51c-1.49 0-1.96.92-1.96 1.87v2.25h3.33l-.53 3.47h-2.8v8.38C19.61 23.02 24 18.06 24 12.07Z"/></svg>
+              </a>
+              <a href="https://www.twitter.com/astroandypr_" target="_blank" rel="noopener" aria-label="X (Twitter)">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.59-6.64 7.59H.47l8.6-9.83L0 1.15h7.59l5.24 6.93Zm-1.29 19.5h2.04L6.49 3.24H4.3Z"/></svg>
+              </a>
+              <a href="https://www.tiktok.com/tag/astroandypr" target="_blank" rel="noopener" aria-label="TikTok">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg>
+              </a>
+              <a href="https://youtube.com/@astroandypr" target="_blank" rel="noopener" aria-label="YouTube">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.07 0 12 0 12s0 3.93.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.93 24 12 24 12s0-3.93-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg>
+              </a>
+              <a href="https://open.spotify.com/artist/7Mx1mmKAtCnSUsemQwussI" target="_blank" rel="noopener" aria-label="Spotify">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0Zm5.52 17.34c-.24.36-.66.48-1.02.24-2.82-1.74-6.36-2.1-10.56-1.14-.42.12-.78-.18-.9-.54-.12-.42.18-.78.54-.9 4.56-1.02 8.52-.6 11.64 1.32.42.18.48.66.3 1.02Zm1.44-3.3c-.3.42-.84.6-1.26.3-3.24-1.98-8.16-2.58-11.94-1.38-.48.12-1.02-.12-1.14-.6-.12-.48.12-1.02.6-1.14 4.38-1.32 9.78-.66 13.5 1.62.36.18.54.78.24 1.2Zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.3c-.6.18-1.2-.18-1.38-.72-.18-.6.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.72 1.62.54.3.72 1.02.42 1.56-.3.42-1.02.6-1.56.3Z"/></svg>
+              </a>
+              <a href="https://music.apple.com/us/artist/astro-andy/1699243003" target="_blank" rel="noopener" aria-label="Apple Music">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M23.99 6.12a9.2 9.2 0 0 0-.24-2.19 4.87 4.87 0 0 0-2.18-3.04A5.02 5.02 0 0 0 19.69.16a10.6 10.6 0 0 0-1.56-.15L17.99 0h-12l-.45.03c-.75.04-1.49.12-2.19.4A4.84 4.84 0 0 0 .49 3.2C.3 3.65.2 4.13.13 4.61c-.06.39-.09.79-.1 1.18L.02 5.88v12.22l.03.43c.05.81.15 1.62.5 2.37a4.85 4.85 0 0 0 3.23 2.8c.42.13.86.19 1.3.23.55.05 1.11.06 1.66.06h11.03a12.5 12.5 0 0 0 1.57-.1 5.5 5.5 0 0 0 2.3-.81 5.05 5.05 0 0 0 1.88-2.2c.18-.42.29-.87.37-1.33.11-.67.14-1.36.14-2.04V6.12Zm-6.42 3.99v5.71c0 .42-.06.83-.25 1.21-.29.59-.76.96-1.39 1.14-.35.1-.7.16-1.07.17a1.9 1.9 0 0 1-1.94-1.53 1.88 1.88 0 0 1 1.04-2.02c.32-.16.67-.25 1.02-.33.38-.08.76-.15 1.13-.24.28-.06.46-.23.51-.51a.9.9 0 0 0 .02-.2V8.09a.72.72 0 0 0-.02-.19c-.04-.15-.15-.24-.31-.23-.16.01-.32.03-.47.07l-2.28.45-2.33.47-1.37.28-.05.01c-.28.08-.38.2-.39.49v7.94c0 .42-.05.83-.22 1.22-.28.64-.77 1.04-1.43 1.24-.35.1-.71.16-1.08.17a1.89 1.89 0 0 1-1.92-1.54c-.14-.81.23-1.69 1.16-2.08.35-.15.73-.23 1.1-.31l.86-.18c.39-.08.58-.32.6-.71V6.16c0-.12.02-.25.05-.37.07-.28.27-.45.54-.52.26-.06.52-.11.78-.16l2.2-.45 2.27-.46 2.01-.4c.22-.05.44-.09.66-.11.31-.02.53.17.56.48v.23c-.01 1.91-.01 3.82-.01 5.73Z"/></svg>
+              </a>
+            </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 · feature band -->
+    <section class="section" style="padding-top:0">
+      <div class="wrap">
+        <figure class="feature-band reveal">
+          <img src="assets/img/helmet-pink-forest.jpg" alt="Astro Andy con casco de astronauta en un bosque rosado" width="1600" height="900" loading="lazy">
+          <figcaption>
+            <blockquote>
+              <p>Un soñador que quiere compartir sus sueños.</p>
+            </blockquote>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 4 · footer -->
+    <footer class="footer">
+      <div class="wrap">
+        <img class="footer__logo" src="assets/logo/3b.svg" alt="Astro Andy spaceman" width="30" height="44">
+        <div class="socials">
+          <a href="https://www.instagram.com/astroandypr/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.13 1.38C1.35 2.68.93 3.35.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.66 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.13-1.38.66-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.13A5.9 5.9 0 0 0 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0Zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84ZM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4Zm7.85-10.4a1.44 1.44 0 1 1-1.44-1.44 1.44 1.44 0 0 1 1.44 1.44Z"/></svg>
+          </a>
+          <a href="https://www.facebook.com/astroandyprmusic/" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M24 12.07C24 5.44 18.63.07 12 .07S0 5.44 0 12.07c0 5.99 4.39 10.95 10.13 11.85v-8.38H7.08v-3.47h3.05V9.43c0-3.01 1.79-4.67 4.53-4.67 1.31 0 2.69.23 2.69.23v2.96h-1.51c-1.49 0-1.96.92-1.96 1.87v2.25h3.33l-.53 3.47h-2.8v8.38C19.61 23.02 24 18.06 24 12.07Z"/></svg>
+          </a>
+          <a href="https://www.twitter.com/astroandypr_" target="_blank" rel="noopener" aria-label="X (Twitter)">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.59-6.64 7.59H.47l8.6-9.83L0 1.15h7.59l5.24 6.93Zm-1.29 19.5h2.04L6.49 3.24H4.3Z"/></svg>
+          </a>
+          <a href="https://www.tiktok.com/tag/astroandypr" target="_blank" rel="noopener" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg>
+          </a>
+          <a href="https://youtube.com/@astroandypr" target="_blank" rel="noopener" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.07 0 12 0 12s0 3.93.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.93 24 12 24 12s0-3.93-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg>
+          </a>
+          <a href="https://open.spotify.com/artist/7Mx1mmKAtCnSUsemQwussI" target="_blank" rel="noopener" aria-label="Spotify">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0Zm5.52 17.34c-.24.36-.66.48-1.02.24-2.82-1.74-6.36-2.1-10.56-1.14-.42.12-.78-.18-.9-.54-.12-.42.18-.78.54-.9 4.56-1.02 8.52-.6 11.64 1.32.42.18.48.66.3 1.02Zm1.44-3.3c-.3.42-.84.6-1.26.3-3.24-1.98-8.16-2.58-11.94-1.38-.48.12-1.02-.12-1.14-.6-.12-.48.12-1.02.6-1.14 4.38-1.32 9.78-.66 13.5 1.62.36.18.54.78.24 1.2Zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.3c-.6.18-1.2-.18-1.38-.72-.18-.6.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.72 1.62.54.3.72 1.02.42 1.56-.3.42-1.02.6-1.56.3Z"/></svg>
+          </a>
+          <a href="https://music.apple.com/us/artist/astro-andy/1699243003" target="_blank" rel="noopener" aria-label="Apple Music">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M23.99 6.12a9.2 9.2 0 0 0-.24-2.19 4.87 4.87 0 0 0-2.18-3.04A5.02 5.02 0 0 0 19.69.16a10.6 10.6 0 0 0-1.56-.15L17.99 0h-12l-.45.03c-.75.04-1.49.12-2.19.4A4.84 4.84 0 0 0 .49 3.2C.3 3.65.2 4.13.13 4.61c-.06.39-.09.79-.1 1.18L.02 5.88v12.22l.03.43c.05.81.15 1.62.5 2.37a4.85 4.85 0 0 0 3.23 2.8c.42.13.86.19 1.3.23.55.05 1.11.06 1.66.06h11.03a12.5 12.5 0 0 0 1.57-.1 5.5 5.5 0 0 0 2.3-.81 5.05 5.05 0 0 0 1.88-2.2c.18-.42.29-.87.37-1.33.11-.67.14-1.36.14-2.04V6.12Zm-6.42 3.99v5.71c0 .42-.06.83-.25 1.21-.29.59-.76.96-1.39 1.14-.35.1-.7.16-1.07.17a1.9 1.9 0 0 1-1.94-1.53 1.88 1.88 0 0 1 1.04-2.02c.32-.16.67-.25 1.02-.33.38-.08.76-.15 1.13-.24.28-.06.46-.23.51-.51a.9.9 0 0 0 .02-.2V8.09a.72.72 0 0 0-.02-.19c-.04-.15-.15-.24-.31-.23-.16.01-.32.03-.47.07l-2.28.45-2.33.47-1.37.28-.05.01c-.28.08-.38.2-.39.49v7.94c0 .42-.05.83-.22 1.22-.28.64-.77 1.04-1.43 1.24-.35.1-.71.16-1.08.17a1.89 1.89 0 0 1-1.92-1.54c-.14-.81.23-1.69 1.16-2.08.35-.15.73-.23 1.1-.31l.86-.18c.39-.08.58-.32.6-.71V6.16c0-.12.02-.25.05-.37.07-.28.27-.45.54-.52.26-.06.52-.11.78-.16l2.2-.45 2.27-.46 2.01-.4c.22-.05.44-.09.66-.11.31-.02.53.17.56.48v.23c-.01 1.91-.01 3.82-.01 5.73Z"/></svg>
+          </a>
+        </div>
+        <div>
+          <p class="footer__fine">© 2026 Astro Andy · Only Palos Ma, LLC</p>
+          <p class="footer__fine">Design &amp; Hosting · <a href="https://enso.dk" target="_blank" rel="noopener">Ensō</a></p>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <script>
+    document.getElementById('contact-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      document.getElementById('form-note').hidden = false;
+    });
+  </script>
+
+</body>
+</html>

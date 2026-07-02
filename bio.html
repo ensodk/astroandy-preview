@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Astro Andy – Bio</title>
+  <meta name="description" content="La historia de Astro Andy – de Andrey Philip a Eterno Retorno: giras por Latinoamérica y Europa, residencia en HÏ Ibiza y escenarios ante decenas de miles.">
+  <link rel="icon" href="assets/logo/2c.svg">
+  <link rel="stylesheet" href="site.css">
+  <script src="galaxy.js" defer></script>
+  <script src="site.js" defer></script>
+  <style>
+    /* ---------- bio page-specific ---------- */
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+
+    .page-hero {
+      min-height:60vh; display:flex; flex-direction:column; justify-content:flex-end;
+      padding:8.5rem 0 clamp(2.5rem,5vw,4rem);
+    }
+    .page-hero .wrap { width:100%; }
+    .page-hero .lead { margin-top:1.4rem; }
+
+    /* intro split */
+    .intro-grid { display:grid; grid-template-columns:.9fr 1.1fr; gap:clamp(2rem,5vw,4rem); align-items:stretch; }
+    .intro-media img {
+      width:100%; height:100%; min-height:440px; object-fit:cover;
+      border-radius:18px; display:block; box-shadow:0 24px 60px rgba(6,6,15,.55);
+    }
+    .intro-copy { display:flex; flex-direction:column; justify-content:center; gap:1.5rem; }
+    .intro-copy p { color:rgba(255,255,255,.78); max-width:58ch; }
+    .intro-copy .intro-lead { font-size:clamp(1.2rem,1.7vw,1.45rem); line-height:1.35; color:var(--text); }
+
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:.9rem; }
+    .stat { padding:1.1rem .9rem 1rem; text-align:center; }
+    .stat__num {
+      display:block; font-family:var(--display); font-weight:700;
+      font-size:clamp(1.9rem,3vw,2.7rem); line-height:1; color:var(--orange);
+    }
+    .stat__label {
+      display:block; margin-top:.45rem; font-family:var(--accent);
+      font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--text-dim);
+    }
+    .stats .stat:nth-child(2) { transition-delay:.07s; }
+    .stats .stat:nth-child(3) { transition-delay:.14s; }
+    .stats .stat:nth-child(4) { transition-delay:.21s; }
+
+    /* story */
+    .story { display:flex; flex-direction:column; gap:clamp(4.5rem,8vw,7rem); }
+    .story p { color:rgba(255,255,255,.78); max-width:60ch; margin-top:1.1rem; }
+    .story .eyebrow { margin-bottom:.7rem; }
+    .hl { color:var(--orange); font-weight:700; }
+
+    .story-grid { display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(2rem,5vw,4rem); align-items:center; }
+    .story-grid--flip .story-media { order:-1; }
+    .story-media img {
+      width:100%; height:auto; aspect-ratio:4/5; object-fit:cover;
+      border-radius:18px; display:block; box-shadow:0 24px 60px rgba(6,6,15,.55);
+    }
+    .story-media--landscape img { aspect-ratio:3/2; }
+    .story-block--narrow { max-width:760px; }
+
+    /* timeline */
+    .timeline { list-style:none; position:relative; margin:1.6rem 0 .4rem; }
+    .timeline::before {
+      content:""; position:absolute; left:6px; top:8px; bottom:8px; width:2px;
+      background:linear-gradient(rgba(255,255,255,.38), rgba(255,255,255,.08));
+      border-radius:2px;
+    }
+    .timeline li { position:relative; padding:.5rem 0 .5rem 2.1rem; }
+    .timeline li::before {
+      content:""; position:absolute; left:0; top:1rem; width:14px; height:14px; border-radius:50%;
+      background:var(--orange); box-shadow:0 0 14px rgba(255,104,37,.65);
+    }
+    .timeline__venue { display:block; font-family:var(--display); font-size:1.25rem; letter-spacing:.05em; color:#fff; line-height:1.15; }
+    .timeline__meta { display:block; font-family:var(--accent); font-size:.62rem; letter-spacing:.18em; text-transform:uppercase; color:var(--text-dim); margin-top:.15rem; }
+
+    /* tag-cloud pills */
+    .pills { list-style:none; display:flex; flex-wrap:wrap; gap:.55rem; margin-top:1.2rem; }
+    .pills li {
+      font-family:var(--accent); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase;
+      color:var(--text); padding:.55rem 1rem; border-radius:999px;
+      background:var(--glass); border:1px solid var(--glass-border);
+      backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+      transition:border-color .22s, transform .22s;
+    }
+    .pills li:hover { border-color:var(--orange); transform:translateY(-2px); }
+    .pills strong { color:var(--orange); font-weight:400; }
+
+    /* album feature */
+    .album-feature { display:grid; grid-template-columns:280px 1fr; gap:clamp(1.8rem,4vw,3rem); align-items:center; padding:clamp(1.4rem,3vw,2.4rem); }
+    .album-feature:hover { transform:none; }
+    .album-feature img { width:100%; height:auto; border-radius:12px; display:block; box-shadow:0 18px 44px rgba(6,6,15,.6); }
+    .album-feature p { margin-top:1.1rem; }
+
+    /* closing feature */
+    .feature { position:relative; border-radius:18px; overflow:hidden; margin-top:2.2rem; }
+    .feature img { width:100%; height:clamp(340px,46vw,520px); object-fit:cover; object-position:center 7%; display:block; }
+    .feature__panel {
+      position:absolute; left:clamp(1rem,4vw,2.5rem); bottom:clamp(1rem,4vw,2.5rem);
+      max-width:540px; padding:1.4rem 1.6rem;
+      background:rgba(6,6,15,.55); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+      border:1px solid var(--glass-border); border-radius:18px;
+    }
+    .feature__panel p { margin:0; max-width:none; color:rgba(255,255,255,.85); font-size:.95rem; }
+
+    /* CTA band */
+    .cta-band { text-align:center; }
+    .cta-band .btn { margin-top:2.2rem; }
+
+    @media (max-width:900px) {
+      .intro-grid, .story-grid { grid-template-columns:1fr; }
+      .story-grid--flip .story-media { order:0; }
+      .intro-media img { min-height:0; height:auto; aspect-ratio:4/5; }
+    }
+    @media (max-width:640px) {
+      .stats { grid-template-columns:repeat(2,1fr); }
+      .album-feature { grid-template-columns:1fr; }
+      .album-feature img { max-width:280px; }
+      .feature__panel { position:static; margin:.9rem 0 0; max-width:none; }
+      .feature { overflow:visible; }
+      .feature img { border-radius:18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="nav__logo" href="index.html"><img src="assets/logo/1b.svg" alt="Astro Andy"></a>
+    <ul class="nav__links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="bio.html" class="is-active">Bio</a></li>
+      <li><a href="musica.html">Música</a></li>
+      <li><a href="videos.html">Videos</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <main class="page">
+
+    <!-- 1 · page hero -->
+    <header class="page-hero">
+      <div class="wrap">
+        <span class="eyebrow">El artista</span>
+        <h1 class="display">Bio</h1>
+      </div>
+    </header>
+
+    <!-- 2 · intro split -->
+    <section class="section" aria-label="Introducción">
+      <div class="wrap intro-grid">
+        <figure class="intro-media reveal">
+          <img src="assets/img/portrait-blue.jpg" alt="Retrato editorial de Astro Andy sobre fondo azul" width="1067" height="1600">
+        </figure>
+        <div class="intro-copy">
+          <p class="intro-lead reveal">Andrés Felipe Vázquez Santiago, nacido en San Lorenzo, Puerto Rico, es un artista que fusiona visión, disciplina y una estética musical que integra espiritualidad, rap épico y sonidos contemporáneos del reggaetón, pop, R&amp;B y ritmos tropicales como el afro, reggae, dancehall y funk.</p>
+          <p class="reveal">Graduado del Bachillerato en Investigación Acción Social (INAS) con concentración en Ciencias Políticas de la Universidad de Puerto Rico, Recinto de Humacao, su propuesta artística se caracteriza por la introspección, la exploración de la dualidad humana y una misión creativa que trasciende lo musical.</p>
+          <div class="stats">
+            <div class="stat card reveal"><span class="stat__num">25.000</span><span class="stat__label">personas, Tegucigalpa</span></div>
+            <div class="stat card reveal"><span class="stat__num">15</span><span class="stat__label">canciones en Eterno Retorno</span></div>
+            <div class="stat card reveal"><span class="stat__num">65.000</span><span class="stat__label">personas, Santiago de Compostela</span></div>
+            <div class="stat card reveal"><span class="stat__num">4</span><span class="stat__label">fechas en HÏ Ibiza</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 · story -->
+    <section class="section">
+      <h2 class="sr-only">La historia</h2>
+      <div class="wrap story">
+
+        <!-- Inicios -->
+        <article class="story-grid reveal">
+          <div>
+            <span class="eyebrow">Capítulo uno</span>
+            <h3 class="display">Inicios y evolución artística</h3>
+            <p>Su carrera comienza oficialmente el 25 de diciembre de 2020 bajo el nombre artístico Andrey Philip, con el lanzamiento del tema Bobby Joe Hatton. Desde entonces ha demostrado una evolución constante, desarrollando un catálogo multifacético que incluye canciones como No Me Digas Que No ft. AMS, Eros, Lamelo Ball (ROTY), Llama, su secuela 9:55, y Doña Lala ft. EMV &amp; Liziarys.</p>
+            <p>Este último sencillo marcó su debut radial en Puerto Rico, sonando en emisoras emblemáticas como Reggaetón 94 (94.7 FM) y Mix 107.7, consolidando sus primeros pasos dentro del circuito musical del país.</p>
+          </div>
+          <figure class="story-media story-media--landscape">
+            <img src="assets/img/studio-mic.jpg" alt="Astro Andy grabando en una cabina vocal" width="1600" height="1067" loading="lazy">
+          </figure>
+        </article>
+
+        <!-- Herencia -->
+        <article class="story-block--narrow reveal">
+          <span class="eyebrow">Tributo a Tego</span>
+          <h3 class="display">Herencia: primer proyecto conceptual</h3>
+          <p>El 26 de octubre de 2021, presenta su primer proyecto conceptual titulado Herencia, un EP tributo a Tego Calderón compuesto por Los Mate Freestyle, La Flakka y Mazukamba.</p>
+          <p>El proyecto acumuló <strong class="hl">143,446 streams en Spotify</strong> y superó las <strong class="hl">366,000 vistas en YouTube</strong>, fortaleciendo su presencia en plataformas digitales y posicionándolo dentro de la nueva generación de artistas emergentes.</p>
+          <p>Ese mismo año, el 7 de noviembre de 2021, Astro Andy tuvo una de sus primeras presentaciones de gran escala al subir al escenario frente a más de 10,000 personas en el Coliseo Manuel G. “Petaca” Iguina en Arecibo durante la final del Baloncesto Superior Nacional, compartiendo escenario con figuras como Anuel AA, Frabian Eli y Anonimous.</p>
+        </article>
+
+        <!-- 2022 -->
+        <article class="story-grid story-grid--flip reveal">
+          <div>
+            <span class="eyebrow">La gira</span>
+            <h3 class="display">2022: expansión internacional</h3>
+            <p>El 2022 marcó un punto de inflexión en su carrera. Tras lanzar el freestyle Marshalls 0629 – inspirado en su decisión de renunciar a su empleo para dedicarse por completo a la música – y el sencillo Flores Pa’ Los Muertos, recibió la invitación para ser opening act del concierto de Anuel AA en Tegucigalpa, Honduras, ante 25,000 personas.</p>
+            <p>A partir de ese momento se integró a parte de la gira internacional del artista, presentándose en importantes escenarios de Latinoamérica y Europa, incluyendo:</p>
+            <ul class="timeline">
+              <li><span class="timeline__venue">Movistar Arena</span><span class="timeline__meta">Buenos Aires, Argentina – 19 mayo 2022</span></li>
+              <li><span class="timeline__venue">Arena Perú</span><span class="timeline__meta">Lima, Perú – 21 mayo 2022</span></li>
+              <li><span class="timeline__venue">Antofagasta</span><span class="timeline__meta">Chile – 24 mayo 2022</span></li>
+              <li><span class="timeline__venue">Arena Viña del Mar</span><span class="timeline__meta">Chile – 28 mayo 2022</span></li>
+              <li><span class="timeline__venue">Movistar Arena</span><span class="timeline__meta">Santiago, Chile – 31 mayo 2022</span></li>
+            </ul>
+            <p>Antes de viajar a Europa lanzó el sencillo Pide Un Deseo, seguido de su debut en HÏ Ibiza, donde tuvo una residencia de cuatro fechas.</p>
+            <p>Durante esta etapa también se presentó en importantes ciudades como:</p>
+            <ul class="pills">
+              <li>Santiago de Compostela <strong>65.000</strong></li>
+              <li>Madrid <strong>45.000+</strong></li>
+              <li>Zurich</li>
+              <li>Milán</li>
+              <li>Roma</li>
+              <li>Barcelona</li>
+              <li>Ibiza</li>
+              <li>Valencia</li>
+              <li>Cádiz</li>
+              <li>Marbella</li>
+              <li>Palma de Mallorca</li>
+              <li>Benidorm</li>
+              <li>Oropesa del Mar</li>
+              <li>Asturias</li>
+            </ul>
+          </div>
+          <figure class="story-media">
+            <img src="assets/img/studio-blue-1.jpg" alt="Astro Andy en el estudio azul estilo nave espacial" width="1066" height="1600" loading="lazy">
+          </figure>
+        </article>
+
+        <!-- El renacer -->
+        <article class="story-grid reveal">
+          <div>
+            <span class="eyebrow">Nueva identidad</span>
+            <h3 class="display">El renacer: Astro Andy</h3>
+            <p>Tras esta gira internacional, el artista entró en una nueva etapa creativa marcada por un cambio de identidad artística. Mientras Andrey Philip representa sus inicios musicales, Astro Andy surge como la evolución de su visión artística.</p>
+            <p>Esta nueva etapa comenzó con los lanzamientos de:</p>
+            <ul class="pills">
+              <li>Una Vez Más <strong>oct 2023</strong></li>
+              <li>Pretexto <strong>dic 2023</strong></li>
+              <li>Tu Cuerpo <strong>ene 2024</strong></li>
+              <li>Tamo En Alta ft. Ochaan <strong>abr 2024</strong></li>
+              <li>Aventura <strong>ago 2024</strong></li>
+              <li>Diciembre En Medellín <strong>dic 2024</strong></li>
+            </ul>
+          </div>
+          <figure class="story-media">
+            <img src="assets/img/helmet-water.jpg" alt="Casco de astronauta reflejando el agua – el renacer de Astro Andy" width="900" height="1600" loading="lazy">
+          </figure>
+        </article>
+
+        <!-- Eterno Retorno -->
+        <article class="reveal">
+          <div class="card album-feature">
+            <img src="assets/covers/album-eterno-retorno.jpg" alt="Portada del álbum Eterno Retorno" width="1000" height="1000" loading="lazy">
+            <div>
+              <span class="eyebrow">El álbum</span>
+              <h3 class="display">Eterno Retorno</h3>
+              <p>El 20 de febrero de 2025, Astro Andy lanzó su primer álbum de estudio Eterno Retorno, un proyecto de 15 canciones que incluye temas como Andrey Philip &amp; Astro Andy, Color, Escondidos, Reloj, Love &lt;3, Bb, Modo Diablo (MD), Fin Del Mundo y el tema homónimo Eterno Retorno.</p>
+              <p>El álbum ha acumulado <strong class="hl">casi 3 millones de streams en Spotify (2,992,642)</strong>. Entre sus temas más destacados se encuentra Tu Cuerpo, que supera <strong class="hl">1,072,186 streams</strong> en la plataforma, mientras que Pretexto alcanzó más de <strong class="hl">1.2 millones de vistas en YouTube</strong>.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- Nuevos hitos -->
+        <article class="story-block--narrow reveal">
+          <span class="eyebrow">Bogotá en el mapa</span>
+          <h3 class="display">Nuevos hitos</h3>
+          <p>El 3 de mayo de 2025, Astro Andy marcó otro momento importante en su carrera al formar parte del opening act del concierto de Maluma – Bogotá En El Mapa – en el Estadio Nemesio Camacho El Campín en Bogotá, como parte de la gira +Pretty +Dirty, presentándose frente a más de 45,000 personas.</p>
+        </article>
+
+        <!-- Presente y futuro -->
+        <article class="reveal">
+          <span class="eyebrow">Lo que viene</span>
+          <h3 class="display">Presente y futuro</h3>
+          <p>Actualmente, Astro Andy se encuentra trabajando en nueva música y desarrollando la visión de lo que será 2026, proyectado como uno de los capítulos más expansivos y trascendentales de su carrera artística.</p>
+          <figure class="feature">
+            <img src="assets/img/helmet-sky-2.jpg" alt="Casco de astronauta reflejando el cielo" width="860" height="1600" loading="lazy">
+            <figcaption class="feature__panel">
+              <p>Con una propuesta auténtica, una narrativa espiritual y una identidad musical clara, Astro Andy continúa posicionándose como uno de los talentos emergentes más prometedores del movimiento latino.</p>
+            </figcaption>
+          </figure>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- 4 · CTA -->
+    <section class="section cta-band">
+      <div class="wrap reveal">
+        <span class="eyebrow">Sigue la historia</span>
+        <h2 class="display">Escucha Eterno Retorno</h2>
+        <a class="btn btn--primary" href="https://open.spotify.com/artist/7Mx1mmKAtCnSUsemQwussI" target="_blank" rel="noopener">Abrir en Spotify</a>
+      </div>
+    </section>
+
+    <!-- 5 · footer -->
+    <footer class="footer">
+      <div class="wrap">
+        <img class="footer__logo" src="assets/logo/3b.svg" alt="Astro Andy spaceman" width="44" height="44">
+        <div class="socials">
+          <a href="https://www.instagram.com/astroandypr/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 0 1-1.38-.9 3.72 3.72 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.13 1.38C1.35 2.68.93 3.35.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.66 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56 1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.9 5.9 0 0 0 2.13-1.38 5.9 5.9 0 0 0 1.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.13A5.9 5.9 0 0 0 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0Zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84ZM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4Zm7.85-10.4a1.44 1.44 0 1 1-1.44-1.44 1.44 1.44 0 0 1 1.44 1.44Z"/></svg>
+          </a>
+          <a href="https://www.facebook.com/astroandyprmusic/" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.07C24 5.44 18.63.07 12 .07S0 5.44 0 12.07c0 5.99 4.39 10.95 10.13 11.85v-8.38H7.08v-3.47h3.05V9.43c0-3.01 1.79-4.67 4.53-4.67 1.31 0 2.69.23 2.69.23v2.96h-1.51c-1.49 0-1.96.92-1.96 1.87v2.25h3.33l-.53 3.47h-2.8v8.38C19.61 23.02 24 18.06 24 12.07Z"/></svg>
+          </a>
+          <a href="https://www.twitter.com/astroandypr_" target="_blank" rel="noopener" aria-label="X">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.59-6.64 7.59H.47l8.6-9.83L0 1.15h7.59l5.25 6.93ZM17.61 20.64h2.04L6.49 3.24H4.3Z"/></svg>
+          </a>
+          <a href="https://www.tiktok.com/tag/astroandypr" target="_blank" rel="noopener" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg>
+          </a>
+          <a href="https://youtube.com/@astroandypr" target="_blank" rel="noopener" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.07 0 12 0 12s0 3.93.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.93 24 12 24 12s0-3.93-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg>
+          </a>
+          <a href="https://open.spotify.com/artist/7Mx1mmKAtCnSUsemQwussI" target="_blank" rel="noopener" aria-label="Spotify">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0Zm5.52 17.34c-.24.36-.66.48-1.02.24-2.82-1.74-6.36-2.1-10.56-1.14-.42.12-.78-.18-.9-.54-.12-.42.18-.78.54-.9 4.56-1.02 8.52-.6 11.64 1.32.42.18.48.66.3 1.02Zm1.44-3.3c-.3.42-.84.6-1.26.3-3.24-1.98-8.16-2.58-11.94-1.38-.48.12-1.02-.12-1.14-.6-.12-.48.12-1.02.6-1.14 4.34-1.32 9.74-.66 13.46 1.62.36.18.54.78.28 1.2Zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.3c-.6.18-1.2-.18-1.38-.72-.18-.6.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.72 1.62.54.3.72 1.02.42 1.56-.3.42-1.02.6-1.56.3Z"/></svg>
+          </a>
+          <a href="https://music.apple.com/us/artist/astro-andy/1699243003" target="_blank" rel="noopener" aria-label="Apple Music">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 1 8.5 3.05a1 1 0 0 0-.8.98v11.63a4.4 4.4 0 0 0-1.95-.46C3.68 15.2 2 16.55 2 18.6S3.68 22 5.75 22 9.5 20.65 9.5 18.6V8.72l9-1.76v6.4a4.4 4.4 0 0 0-1.95-.46c-2.07 0-3.75 1.35-3.75 3.4s1.68 3.4 3.75 3.4S20.3 18.35 20.3 16.3V1.98A1 1 0 0 0 19 1Z"/></svg>
+          </a>
+        </div>
+        <p class="footer__fine">© 2026 Astro Andy · Only Palos Ma, LLC</p>
+        <p class="footer__fine">Design &amp; Hosting · <a href="https://enso.dk" target="_blank" rel="noopener">Ensō</a></p>
+      </div>
+    </footer>
+
+  </main>
+
+</body>
+</html>
