@@ -1,14 +1,29 @@
 /* ==========================================================================
    GALAXY BACKGROUND ENGINE – variante "COSMOS NARANJA" (v5)
-   Concepto: maximalismo de marca – el naranja #FF6825 ACENTUA el espacio
-   violeta profundo (2 bolsillos de nebulosa naranja, meteoros calidos, 8% de
-   estrellas medias naranjas y una corona solar respirando bajo el horizonte).
-   Autonomo: crea/usa el canvas #galaxy y no depende del resto del marcado.
+   + EFECTO CURSOR "STARDUST TRAIL" (efecto C):
+   el puntero emite una estela viva de chispas calidas (blanco/naranja) que
+   siguen al raton y se desvanecen en ~600 ms, como el polvo de una cola de
+   cometa. La tasa de emision es proporcional a la VELOCIDAD del cursor
+   (movimiento rapido = estela mas densa; quieto = nada). Anillo de particulas
+   preasignado (cero allocs por frame), mezcla 'lighter', alpha baja: brilla,
+   no deslumbra. Nada de lineas ni conexiones.
+
+   Contrato de perf/a11y preservado: DPR<=2; pausa en document.hidden;
+   prefers-reduced-motion -> UN frame estatico, sin bucle y SIN efecto cursor;
+   resize con debounce; cero allocs en el camino caliente; ~120fps; luminancia
+   media detras del texto central baja (el glow del cursor es sutil y aditivo,
+   NO lava el texto). En tactil (sin hover) se OMITE el efecto por completo.
    ========================================================================== */
 (function () {
   'use strict';
 
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Tactil / sin puntero fino: se omite la estela del cursor (fallback a deriva/parallax).
+  var noHover = (window.matchMedia && window.matchMedia('(hover: none)').matches) ||
+                ('ontouchstart' in window) ||
+                (navigator.maxTouchPoints > 0 && !(window.matchMedia && window.matchMedia('(hover: hover)').matches));
+  var TRAIL = !reduced && !noHover; // el efecto cursor solo vive aqui
+
   var DPR = Math.min(window.devicePixelRatio || 1, 2);
   var M = 60; // margen de envoltura (px) para que los sprites no "salten" en los bordes
 
@@ -45,11 +60,25 @@
   var W = 0, H = 0, wrapW = 0, wrapH = 0;
   var layers = [];
   var dotSprites = [], heroSprites = [];
-  var mTX = 0, mTY = 0, mX = 0, mY = 0;  // raton: objetivo / suavizado
+  var mTX = 0, mTY = 0, mX = 0, mY = 0;  // raton (parallax normalizado): objetivo / suavizado
   var scTX = 0, scX = 0;                 // scroll: objetivo / suavizado
   var rafId = 0, lastT = 0, resizeTimer = 0;
   var meteor = { on: false, x: 0, y: 0, vx: 0, vy: 0, ux: 0, uy: 0, age: 0, dur: 0, len: 0 };
   var nextMeteor = 0;
+
+  /* ---- STARDUST TRAIL: estado del cursor (en px de pantalla) y anillo ---- */
+
+  var TRAIL_MAX = 60;                     // tope del anillo (perf holgada)
+  var TRAIL_LIFE = 0.62;                  // vida ~620 ms
+  var dustSprites = [];                   // sprites de polvo pre-renderizados (blanco/naranja)
+  // Anillo de particulas: arrays paralelos PREASIGNADOS -> cero allocs por frame.
+  var pX, pY, pVX, pVY, pAge, pLife, pSize, pSpr, pSeed;
+  var pHead = 0, pAlive = 0;              // cursor de escritura + cuenta viva
+  var cursorX = -1, cursorY = -1;         // ultimo raton crudo (px); -1 = sin dato aun
+  var emitX = 0, emitY = 0;               // origen de emision suavizado (lerp) -> estela sedosa
+  var haveCursor = false;                 // ¿ha entrado el raton alguna vez?
+  var emitCarry = 0;                      // acumulador fraccional de emision (sin perder tasa)
+  var lastRawX = 0, lastRawY = 0, cursorSpeed = 0; // velocidad suavizada (px/s)
 
   function pickColor() {
     var r = Math.random();
@@ -111,6 +140,146 @@
       dotSprites[i] = dotSprite(32, COLORS[i]);
       heroSprites[i] = heroSprite(64, COLORS[i]);
     }
+  }
+
+  /* ---- STARDUST TRAIL: sprites de polvo pre-renderizados ----
+     Chispa suave con nucleo blanco caliente y halo tintado. Tres tintes:
+     0 = blanco puro, 1 = ambar calido, 2 = naranja de marca. Se dibujan con
+     'lighter' (aditivo) y alpha baja, asi que resplandecen sin quemar. */
+
+  function dustSprite(px, coreA, rgb, edgeA) {
+    var cv = document.createElement('canvas');
+    cv.width = cv.height = px;
+    var g = cv.getContext('2d');
+    var h = px / 2;
+    var gr = g.createRadialGradient(h, h, 0, h, h, h);
+    gr.addColorStop(0, 'rgba(255,255,255,' + coreA + ')');       // corazon blanco caliente
+    gr.addColorStop(0.35, 'rgba(' + rgb + ',' + (edgeA * 0.9).toFixed(3) + ')');
+    gr.addColorStop(1, 'rgba(' + rgb + ',0)');                    // borde desvanecido
+    g.fillStyle = gr;
+    g.fillRect(0, 0, px, px);
+    return cv;
+  }
+
+  function buildDustSprites() {
+    // px 20 da un sprite nitido cuando se escala a ~2-8px en pantalla.
+    dustSprites[0] = dustSprite(20, 0.95, '255,238,214', 0.55); // blanco calido
+    dustSprites[1] = dustSprite(20, 0.90, '255,190,120', 0.55); // ambar
+    dustSprites[2] = dustSprite(20, 0.85, '255,120,55',  0.55); // naranja de marca
+  }
+
+  function buildTrail() {
+    // Preasignacion unica: los arrays viven toda la sesion, se reciclan por indice.
+    pX = new Float32Array(TRAIL_MAX);
+    pY = new Float32Array(TRAIL_MAX);
+    pVX = new Float32Array(TRAIL_MAX);
+    pVY = new Float32Array(TRAIL_MAX);
+    pAge = new Float32Array(TRAIL_MAX);
+    pLife = new Float32Array(TRAIL_MAX);
+    pSize = new Float32Array(TRAIL_MAX);
+    pSpr = new Uint8Array(TRAIL_MAX);
+    pSeed = new Float32Array(TRAIL_MAX);   // fase para el centelleo individual
+    for (var i = 0; i < TRAIL_MAX; i++) pAge[i] = pLife[i] = 0; // muertas de inicio
+    pHead = 0; pAlive = 0;
+    emitCarry = 0;
+    haveCursor = false;
+    cursorX = cursorY = -1;
+    cursorSpeed = 0;
+  }
+
+  // Nace una particula en (x,y) con un pequeno impulso lateral (dispersion de cola).
+  function spawnDust(x, y, dirx, diry, speed) {
+    var i = pHead;
+    pHead = (pHead + 1) % TRAIL_MAX;
+    if (pAge[i] >= pLife[i] || pLife[i] === 0) {
+      // reciclamos un slot muerto -> mantenemos la cuenta acotada
+      if (pAlive < TRAIL_MAX) pAlive++;
+    }
+    // jitter perpendicular a la direccion del cursor + un pelin hacia atras (cola)
+    var perpx = -diry, perpy = dirx;
+    var j = (Math.random() - 0.5);
+    var back = 0.10 + Math.random() * 0.18;
+    pX[i] = x + perpx * j * 6;
+    pY[i] = y + perpy * j * 6;
+    // velocidad: deriva suave, mezcla de dispersion lateral y arrastre hacia atras
+    var vs = 8 + speed * 0.05;
+    pVX[i] = perpx * j * vs - dirx * back * vs + (Math.random() - 0.5) * 6;
+    pVY[i] = perpy * j * vs - diry * back * vs + (Math.random() - 0.5) * 6 - 4; // leve subida ("flotan")
+    pAge[i] = 0;
+    pLife[i] = TRAIL_LIFE * (0.7 + Math.random() * 0.6); // 430-720 ms
+    pSize[i] = 2.2 + Math.random() * 4.4;                 // px en pantalla
+    var r = Math.random();
+    pSpr[i] = r < 0.42 ? 0 : (r < 0.78 ? 1 : 2);          // blanco > ambar > naranja
+    pSeed[i] = Math.random() * Math.PI * 2;
+  }
+
+  // Emite chispas segun la velocidad del cursor (rapido = mas densa; quieto = 0).
+  function emitTrail(dt) {
+    if (!haveCursor || cursorX < 0) return;
+    // origen de emision suavizado (lerp) -> la estela nunca salta ni tiembla
+    var ke = 1 - Math.exp(-dt * 22);
+    emitX += (cursorX - emitX) * ke;
+    emitY += (cursorY - emitY) * ke;
+    // direccion del movimiento (del origen suave hacia el raton crudo)
+    var ddx = cursorX - emitX, ddy = cursorY - emitY;
+    var dl = Math.sqrt(ddx * ddx + ddy * ddy) || 1;
+    var dirx = ddx / dl, diry = ddy / dl;
+    // tasa proporcional a la velocidad; umbral bajo para ignorar micro-jitter parado
+    var sp = cursorSpeed;
+    if (sp < 12) { emitCarry = 0; return; }              // practicamente quieto -> nada
+    var rate = Math.min(sp * 0.14, 90);                  // particulas/s, con techo
+    emitCarry += rate * dt;
+    var n = emitCarry | 0;
+    if (n > 6) n = 6;                                     // techo por frame (anti-rafaga)
+    emitCarry -= n;
+    for (var k = 0; k < n; k++) {
+      // interpolamos a lo largo del segmento recorrido para una estela continua
+      var t = (k + Math.random()) / (n || 1);
+      var ex = emitX + ddx * t, ey = emitY + ddy * t;
+      spawnDust(ex, ey, dirx, diry, sp);
+    }
+  }
+
+  function drawTrail(ts) {
+    if (!TRAIL || pAlive === 0) return;
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    var alive = 0;
+    for (var i = 0; i < TRAIL_MAX; i++) {
+      var life = pLife[i];
+      if (life === 0) continue;
+      var age = pAge[i];
+      if (age >= life) continue;
+      alive++;
+      var f = age / life;                 // 0 -> 1
+      var inv = 1 - f;
+      // fade: entra rapido, sale suave (curva potencia); centelleo leve
+      var tw = 0.85 + 0.15 * Math.sin(ts * 9 + pSeed[i]);
+      var a = inv * inv * 0.5 * tw;       // alpha pico ~0.5, aditivo -> glimmer no glare
+      if (a <= 0.003) continue;
+      var s = pSize[i] * (0.55 + inv * 0.7); // encoge al morir
+      ctx.globalAlpha = a;
+      var spr = dustSprites[pSpr[i]];
+      ctx.drawImage(spr, pX[i] - s * 0.5, pY[i] - s * 0.5, s, s);
+    }
+    ctx.restore();
+    ctx.globalAlpha = 1;
+    pAlive = alive; // recuento real de vivas (evita recorrer si todo esta muerto)
+  }
+
+  function stepTrail(dt) {
+    if (!TRAIL) return;
+    // integra particulas vivas (posicion + arrastre suave); sin allocs
+    for (var i = 0; i < TRAIL_MAX; i++) {
+      if (pLife[i] === 0 || pAge[i] >= pLife[i]) continue;
+      pAge[i] += dt;
+      pX[i] += pVX[i] * dt;
+      pY[i] += pVY[i] * dt;
+      var drag = 1 - Math.min(1, dt * 1.8);
+      pVX[i] *= drag;
+      pVY[i] *= drag;
+    }
+    emitTrail(dt);
   }
 
   /* ---- nebulosas pre-renderizadas (cumulos de blobs suaves, borde desvanecido) ----
@@ -449,6 +618,15 @@
     mY += (mTY - mY) * k;
     scX += (scTX - scX) * k;
 
+    // velocidad del cursor suavizada (para la tasa de emision de la estela)
+    if (TRAIL && haveCursor) {
+      var vdx = cursorX - lastRawX, vdy = cursorY - lastRawY;
+      var instSpeed = Math.sqrt(vdx * vdx + vdy * vdy) / dt; // px/s de este frame
+      var kv = 1 - Math.exp(-dt * 14);
+      cursorSpeed += (instSpeed - cursorSpeed) * kv;
+      lastRawX = cursorX; lastRawY = cursorY;
+    }
+
     // deriva ociosa
     for (var L = 0; L < layers.length; L++) {
       layers[L].dx += layers[L].cfg.dx * dt;
@@ -459,12 +637,16 @@
       nebulae[N].y += nebulae[N].dry * dt;
     }
 
+    // avanza el estado de la estela (integrar + emitir) antes de dibujar
+    stepTrail(dt);
+
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     ctx.drawImage(bg, 0, 0, W, H);
     drawCorona(ts);
     drawNebulae(ts);
     drawStars(ts);
     stepMeteor(t, dt);
+    drawTrail(ts);   // la estela va ENCIMA, aditiva y de baja alpha
   }
 
   function drawStatic() { // prefers-reduced-motion: un solo frame, quieto y bello
@@ -524,19 +706,33 @@
     canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block;';
     ctx = canvas.getContext('2d');
     buildSprites();
+    buildDustSprites();
     buildNebSprites();
     size();
     buildBg();
     buildCorona();
     build();
     buildNebulae();
+    buildTrail();
     window.addEventListener('resize', onResize);
 
     if (reduced) { drawStatic(); return; }
 
     window.addEventListener('mousemove', function (e) {
+      // parallax normalizado (comportamiento existente)
       mTX = (e.clientX / W) * 2 - 1;
       mTY = (e.clientY / H) * 2 - 1;
+      // estela: guarda el raton crudo en px (solo si el efecto esta activo)
+      if (TRAIL) {
+        if (!haveCursor) {
+          // primer contacto: siembra origen y "ultimo crudo" para no soltar una rafaga
+          emitX = e.clientX; emitY = e.clientY;
+          lastRawX = e.clientX; lastRawY = e.clientY;
+          haveCursor = true;
+        }
+        cursorX = e.clientX;
+        cursorY = e.clientY;
+      }
     }, { passive: true });
 
     window.addEventListener('scroll', function () {
